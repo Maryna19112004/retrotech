@@ -1,0 +1,121 @@
+<!DOCTYPE html> <!-- Тип документа HTML5 -->
+<html lang="uk"> <!-- Початок HTML-документа, мова — українська -->
+<head>
+  <meta charset="UTF-8"> <!-- Кодування символів UTF-8 -->
+  <title>Товари — RetroTech</title> <!-- Назва сторінки у вкладці -->
+  <link rel="stylesheet" href="style.css"> <!-- Підключення CSS стилів -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Rubik&display=swap" rel="stylesheet"> <!-- Шрифти Google Fonts -->
+</head>
+<body>
+  <!-- Шапка сайту з логотипом і меню -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">RetroTech</div> <!-- Назва сайту -->
+      <nav> <!-- Навігація по сайту -->
+        <a href="index.html">Про нас</a>
+        <a href="products.html">Товари</a>
+        <a href="cart.html">Кошик</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Секція з товарами -->
+  <section class="products">
+    <h2>Наші товари</h2> <!-- Заголовок секції -->
+
+    <!-- Сітка товарів -->
+    <div class="product-grid">
+      <!-- Кожен блок — окремий товар -->
+      <div class="product">
+        <img src="tv.jpg" alt="Телевізор">
+        <h3>Телевізор Sony 1982</h3>
+        <p>2500 грн</p>
+      </div>
+      <!-- Інші товари аналогічно -->
+      <div class="product">
+        <img src="walkman.jpg" alt="Walkman">
+        <h3>Касетний плеєр Walkman</h3>
+        <p>2200 грн</p>
+      </div>
+      <div class="product">
+        <img src="radio.jpg" alt="Радіо">
+        <h3>Радіо Grundig</h3>
+        <p>1800 грн</p>
+      </div>
+      <div class="product">
+        <img src="console.jpg" alt="Ігрова консоль">
+        <h3>Консоль Atari</h3>
+        <p>2900 грн</p>
+      </div>
+      <div class="product">
+        <img src="boombox.jpg" alt="Бумбокс">
+        <h3>Бумбокс JVC 1984</h3>
+        <p>3100 грн</p>
+      </div>
+      <div class="product">
+        <img src="camera.jpg" alt="Фотокамера">
+        <h3>Камера Polaroid</h3>
+        <p>2400 грн</p>
+      </div>
+      <div class="product">
+        <img src="phone.jpg" alt="Ретро телефон">
+        <h3>Телефон Western Electric</h3>
+        <p>1700 грн</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Нижня частина сайту -->
+  <footer>
+    <p>© 2025 RetroTech | from Ukraine with ❤</p> <!-- Авторські права -->
+  </footer>
+  
+  <!-- Повідомлення про додавання до кошика -->
+  <div id="cart-message">Додано до кошика</div>
+
+  <!-- JavaScript для кнопок "Купити" -->
+  <script>
+    // Масив з товарами та цінами
+    const products = [
+      { name: "Телевізор Sony 1982", price: 2500 },
+      { name: "Касетний плеєр Walkman", price: 2200 },
+      { name: "Радіо Grundig", price: 1800 },
+      { name: "Консоль Atari", price: 2900 },
+      { name: "Бумбокс JVC 1984", price: 3100 },
+      { name: "Камера Polaroid", price: 2400 },
+      { name: "Телефон Western Electric", price: 1700 }
+    ];
+  
+    // Функція показує повідомлення "Додано до кошика"
+    function showMessage() {
+      const message = document.getElementById('cart-message');
+      message.style.display = 'block';
+      message.classList.remove('fade');
+      void message.offsetWidth;
+      message.classList.add('fade');
+      setTimeout(() => {
+        message.style.display = 'none';
+      }, 2000); // Через 2 секунди ховається
+    }
+
+    // Додає кнопки "Купити" до кожного товару
+    document.querySelectorAll('.product').forEach((productEl, index) => {
+      const button = document.createElement('button');
+      button.textContent = 'Купити';
+      button.className = 'buy-button';
+      button.onclick = () => {
+        // Зчитуємо збережений кошик або створюємо новий
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        // Додаємо вибраний товар
+        cart.push(products[index]);
+        // Зберігаємо оновлений кошик
+        localStorage.setItem('cart', JSON.stringify(cart));
+        // Показуємо повідомлення
+        showMessage();
+      };
+      // Додаємо кнопку до товару
+      productEl.appendChild(button);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html> <!-- Тип документа HTML5 -->
+<html lang="uk"> <!-- Початок HTML-документа, мова — українська -->
+<head>
+  <meta charset="UTF-8">  <!-- Кодування символів UTF-8 -->
+  <title>Кошик — RetroTech</title> <!-- Назва сторінки у вкладці -->
+  <link rel="stylesheet" href="style.css"> <!-- Підключення CSS стилів -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Rubik&display=swap" rel="stylesheet"> <!-- Шрифти Google Fonts -->
+</head>
+<body>
+  <div class="wrapper"> <!-- Основний контейнер сторінки -->
+    <!-- Шапка сайту з логотипом і меню -->
+    <header>
+      <div class="nav-container">
+        <div class="logo">RetroTech</div> <!-- Назва сайту -->
+        <nav> <!-- Навігація по сайту -->
+          <a href="index.html">Про нас</a>
+          <a href="products.html">Товари</a>
+          <a href="cart.html">Кошик</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Секція кошика -->
+    <section class="cart-section">
+      <h2 class="cart-title">Ваш кошик</h2>
+      <div id="cart-box">
+        <ul id="cart-items"></ul> <!-- Список товарів у кошику -->
+        <p id="cart-total">Всього: 0 грн</p> <!-- Підсумкова сума -->
+      </div>
+      <button class="buy-button" onclick="checkout()">Оформити замовлення</button> <!-- Кнопка оформлення -->
+
+      <!-- Схована форма для введення даних доставки -->
+      <div id="delivery-form" style="display:none;">
+        <h3>Форма для оформлення доставки</h3>
+        <form id="order-form">
+          <label for="name">Ім'я:</label>
+          <input type="text" id="name" required><br><br>
+
+          <label for="address">Адреса доставки:</label>
+          <input type="text" id="address" required><br><br>
+
+          <label for="phone">Телефон:</label>
+          <input type="tel" id="phone" required><br><br>
+
+          <button type="submit" class="buy-button">Підтвердити замовлення</button>
+        </form>
+      </div>
+    </section>
+
+   <!-- Нижня частина сайту -->
+    <footer>
+      <p>© 2025 RetroTech | from Ukraine with ❤</p> <!-- Авторські права -->
+    </footer>
+  </div>
+
+  <!-- Повідомлення після успішного оформлення -->
+  <div id="order-message" style="text-align: center;">
+    <p>Дякуємо за замовлення!</p>
+    <p>З ❤ RetroTech</p>
+  </div>
+
+  <!-- JavaScript для роботи кошика -->
+  <script>
+    // Отримуємо дані з локального сховища
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let total = cart.reduce((sum, item) => sum + item.price, 0);
+
+    // Виводить товари у кошику на сторінку
+    function renderCart() {
+      const list = document.getElementById('cart-items');
+      list.innerHTML = '';
+      total = 0;
+
+      cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} — ${item.price} грн `;
+
+        // Кнопка для видалення товару
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Видалити';
+        deleteBtn.className = 'delete-button';
+        deleteBtn.onclick = () => {
+          cart.splice(index, 1); // Видаляємо з масиву
+          localStorage.setItem('cart', JSON.stringify(cart)); // Оновлюємо сховище
+          renderCart(); // Перемальовуємо список
+        };
+
+        li.appendChild(deleteBtn);
+        list.appendChild(li);
+        total += item.price;
+      });
+
+      document.getElementById('cart-total').textContent = `Всього: ${total} грн`;
+    }
+
+    // Показує форму для доставки
+    function checkout() {
+      if (cart.length === 0) {
+        alert("Кошик порожній.");
+        return;
+      }
+      document.getElementById('delivery-form').style.display = 'block';
+    }
+
+    // Обробка відправки форми
+    document.getElementById('order-form')?.addEventListener('submit', function(event) {
+      event.preventDefault(); // Скасовуємо перезавантаження
+
+      document.getElementById('delivery-form').style.display = 'none'; // Ховаємо форму
+      const message = document.getElementById('order-message');
+      message.style.display = 'block'; // Показуємо подяку
+
+      // Очищення кошика
+      localStorage.removeItem('cart');
+      cart.length = 0;
+      renderCart();
+
+      // Приховуємо повідомлення через 4 сек. і перезавантажуємо
+      setTimeout(() => {
+        message.style.display = 'none';
+        location.reload();
+      }, 4000);
+    });
+
+    // Запускаємо початкову побудову кошика
+    renderCart();
+  </script>
+
+</body>
+</html>
