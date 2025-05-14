@@ -452,4 +452,48 @@ html, body {
   text-align: left;
 }
 
+@media (max-width: 768px) {
+  header {
+    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  nav {
+    margin-top: 10px;
+  }
+
+  nav a {
+    display: block;
+    margin: 10px 0;
+  }
+
+  .product-grid {
+    grid-template-columns: 1fr;
+    padding: 10px;
+  }
+
+  .product {
+    padding: 15px;
+  }
+
+  form {
+    padding: 10px;
+  }
+
+  input, textarea {
+    font-size: 16px;
+  }
+
+  .buy-button, .delete-button {
+    width: 100%;
+    margin: 10px 0 0;
+  }
+
+  footer {
+    padding: 15px;
+    font-size: 14px;
+    text-align: center;
+  }
+}
 
