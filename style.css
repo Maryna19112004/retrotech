@@ -193,6 +193,7 @@ margin: 10px 0; /* Відступи */
     text-align: center;
     font-size: 14px;
     border-top: 3px solid #d4a373;
+     margin-top: auto; 
   }
 
   /* Кнопка "Купити" */
